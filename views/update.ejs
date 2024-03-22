@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+    <!-- <link rel="stylesheet" href="css/update.css"/> -->
+
+    <style>
+      body {
+        font-family: Arial, sans-serif;
+        margin: 0;
+        padding: 0;
+        overflow: hidden;
+      }
+
+      .wrapper {
+        width: 100vw;
+        height: 100vh;
+        background-image: linear-gradient(
+            to right bottom,
+            rgba(242, 225, 227, 0.7),
+            rgba(225, 102, 133, 0.7)
+          ),
+          url("img/wallpaper.webp");
+        background-size: cover;
+        background-repeat: no-repeat;
+        text-align: center;
+        padding-top: 3rem;
+      }
+
+      #updateForm{
+        font-size: 1.5rem;
+      }
+
+      .lbl{
+        margin-right: 2rem;
+        font-size: 2rem;
+      }
+
+      .text-value{
+  margin-left: 6rem;
+
+}
+
+.value{
+  font-size: 1.2rem;
+}
+      h1 {
+        font-size: 5rem;
+        background-image: linear-gradient(
+          to right,
+          rgb(52, 52, 45),
+          rgb(182, 53, 13)
+        );
+        -webkit-background-clip: text;
+        color: transparent;
+      }
+
+      p {
+        font-size: 2rem;
+        align-items: center;
+        margin: 2rem 2rem;
+      }
+
+      /* CSS */
+      .btn {
+        /* appearance: none; */
+        background-color: #ecc8c8;
+        border-radius: 1rem;
+        border-style: none;
+        box-shadow: #a13f47 0 -5px 6px inset;
+        box-sizing: border-box;
+        color: #1f1d1d;
+        cursor: pointer;
+        height: 2.5rem;
+        margin: 1rem 3rem;
+        font-size: 1.3rem;
+        font-weight: 600;
+        padding: 0.2rem 2rem;
+        text-align: center;
+        transition: all 0.15s;
+      }
+
+      .btn:hover {
+        background-color: #ff4463;
+        box-shadow: #f6d7c8 0 -6px 8px inset;
+        transform: scale(1.125);
+      }
+
+      .btn:active {
+        transform: scale(1.025);
+      }
+    </style>
+  </head>
+  <body>
+    <div class="wrapper">
+      <h1>Update Data</h1>
+      <form id="updateForm">
+        <label class="lbl text-lbl">Title</label>
+        <input type="text" name="title" class=" value text-value"/>
+        <br />
+        <br />
+        <label class="lbl">Description</label>
+        <input type="text" name="desc" class="value"/>
+        <br />
+        <br />
+        <button type="submit" class="btn">Submit</button>
+      </form>
+    </div>
+
+    <script>
+      const fr = document.querySelector("#updateForm");
+
+      const url = new URL(window.location.href);
+      const pathname = url.pathname;
+      const pathParts = pathname.split("/");
+      const tid = pathParts[pathParts.length - 1];
+
+      console.log("tid",tid);
+        //     const url = new URL(window.location.href);
+        //   const pathname = url.pathname;
+        // //   const pathParts = pathname.split("/");
+        //   const tid = pathParts[3];
+        const rid=pathParts[2];
+
+
+      const urlParams = new URLSearchParams(window.location.search);
+    const id = urlParams.get('rid');
+
+    
+    fr.addEventListener("submit", async (event) => {
+      console.log("tid",tid);
+      event.preventDefault();
+      console.log("tid",tid);
+      
+        const formData = new FormData(fr);
+        const title = formData.get("title");
+        const desc = formData.get("desc");
+        
+        try {
+          const response = await fetch(`/api/v1/update/${rid}/${tid}`, {
+            method: "PUT",
+            headers: {
+              "Content-Type": "application/json",
+            },
+            body: JSON.stringify({ title,desc }),
+          });
+          alert("Data updated successfully");
+          console.log("idejs",id);
+          console.log("tidejs",tid);
+          console.log("rid",rid);
+          window.location.href = `http://localhost:3000/getData?rid=${rid}`;
+        } catch (err) {
+          console.log(err.message);
+          console.log("Not working");
+        }
+      });
+    </script>
+  </body>
+</html>

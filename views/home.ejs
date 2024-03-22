@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+    <!-- <link rel="stylesheet" href="css/home.css"/> -->
+    <style>
+      body {
+        font-family: Arial, sans-serif;
+        margin: 0;
+        padding: 0;
+        width: 100%;
+        height: 100%;
+        background-image: linear-gradient(
+          to right bottom,
+          rgba(225, 98, 134, 0.4),
+          rgba(244, 214, 202, 0.7),
+          rgb(242, 188, 188)
+        );
+        background-size: cover;
+        background-repeat: no-repeat;
+        /* position: fixed; */
+        /* overflow: hidden; */
+      }
+
+      .wrapper {
+        width: 40rem;
+        height: 25rem;
+        background-image: linear-gradient(
+          to right bottom,
+          rgba(156, 149, 146, 0.4),
+          rgba(177, 155, 146, 0.7),
+          rgba(160, 134, 124, 0.7)
+        );
+
+        text-align: center;
+        margin:10% 27%;
+        margin-bottom: 13%;
+      }
+
+      h1 {
+        font-size: 3rem;
+        /* margin-top:12rem; */
+        padding-top: 3rem;
+        background-image: linear-gradient(
+          to right,
+          rgb(36, 30, 31),
+          rgb(237, 44, 105)
+        );
+        -webkit-background-clip: text;
+        color: transparent;
+        text-align: center;
+        font-family: "Franklin Gothic Medium", "Arial Narrow", Arial, sans-serif;
+      }
+
+      .form {
+        text-align: center;
+      }
+
+      .key {
+        font-size: 1.7rem;
+        margin: 2rem;
+      }
+
+      .value {
+        margin: 1rem;
+        font-size: 1rem;
+        border: none;
+        border-bottom: 2px solid black;
+        padding: 0.4rem;
+      }
+      .title {
+        margin-left: 7rem;
+      }
+      .pass {
+        margin-left: 0rem;
+      }
+
+      .btn {
+        background-color: #ea466f;
+        border-radius: 1rem;
+        border-style: none;
+        box-shadow: #523638 0 -5px 6px inset;
+        box-sizing: border-box;
+        color: #1f1d1d;
+        cursor: pointer;
+        height: 2.5rem;
+        margin: 1rem 14rem;
+        font-size: 1.3rem;
+        font-weight: 600;
+        padding: 0.2rem 2rem;
+        text-align: center;
+        transition: all 0.15s;
+        /* align-items: center; */
+      }
+
+      .btn:hover {
+        background-color: #f4e7e9;
+        box-shadow: #e6616a 0 -6px 8px inset;
+        transform: scale(1.125);
+      }
+
+      .btn:active {
+        transform: scale(1.025);
+      }
+    </style>
+  </head>
+  <body>
+    <div class="wrapper">
+      <h1>Fill the Todo</h1>
+      <!-- <form method="post" action="/api/v1/create"> -->
+      <form id="createform">
+        <label class="key">Title of Todo</label>
+        <input
+          type="text"
+          name="title"
+          placeholder="Title"
+          class="value title"
+        />
+        <br />
+        <br />
+        <label class="key">Description for Todo</label>
+        <input
+          type="text"
+          name="desc"
+          placeholder="Description"
+          class="value"
+        />
+        <br />
+        <br />
+        <!-- <label class="key">Enter Student's Age</label>
+        <input type="text" name="age" placeholder="Age" class="value"/>
+
+        <br />
+        <br /> -->
+        <button type="submit" class="btn">Submit</button>
+      </form>
+    </div>
+
+    <script>
+      const fr = document.querySelector("#createform");
+
+      const url = new URL(window.location.href);
+      const pathname = url.pathname;
+      const pathParts = pathname.split("/");
+      const id = pathParts[pathParts.length - 1];
+
+      fr.addEventListener("submit", async (event) => {
+        event.preventDefault();
+
+        const formData = new FormData(fr);
+        const title = formData.get("title");
+        const desc = formData.get("desc");
+
+        try {
+          const response = await fetch(`/api/v1/create/${id}`, {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+            },
+            body: JSON.stringify({ title, desc }),
+          });
+          // alert("Data updated successfully");
+          window.location.href = `http://localhost:3000/display?title=${title}&desc=${desc}&rid=${encodeURIComponent(
+            id
+          )}`;
+        } catch (err) {
+          console.log(err.message);
+          console.log("Not working");
+        }
+      });
+    </script>
+  </body>
+</html>

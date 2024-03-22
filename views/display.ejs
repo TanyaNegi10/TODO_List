@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+    <link rel="stylesheet" href="css/display.css" />
+  </head>
+  <body>
+    <div class="wrapper">
+      <h1>My Todo</h1>
+      <% const numberOfColors = 7; %>
+      <div class="box">
+        <% data.forEach((element,index) => { %>
+        <div class="content-box <%= 'color'+(index % numberOfColors +1) %>" data-tid="<%=element.tid%>">
+          <h2 id="title"><%=element.title%></h2>
+          <!-- <span><a href="https://www.flaticon.com/free-icons/pin" title="pin icons"></a></span> -->
+          <div class="content">
+            <p class="desc"><%= element.desc %></p>
+
+            <div class="btns">
+              <button class="btn update-btn">Update</button>
+              <button class="btn delete-btn">Delete</button>
+            </div>
+          </div>
+        </div>
+        <% }); %>
+      </div>
+      <button class="insert-btn">Insert new Todo</button>
+    </div>
+    <script src="js/display.js"></script>
+  </body>
+</html>
